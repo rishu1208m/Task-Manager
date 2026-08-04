@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<!--
+  TASK MANAGER — a assignment project demonstrating:
+  Built with ONLY HTML5 + CSS3 + Vanilla JavaScript (ES6). No frameworks.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Task Manager</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-theme="dark">
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="navbar__inner">
+      <div class="logo">
+        <span class="logo__mark" aria-hidden="true">◆</span>
+        <span class="logo__text">Taskline</span>
+      </div>
+
+      <nav class="navbar__links" aria-label="Page sections">
+        <a href="#dashboard">Dashboard</a>
+        <a href="#pipeline">Rendering Pipeline</a>
+        <a href="#propagation">Event Propagation</a>
+      </nav>
+
+      <button id="themeToggle" class="theme-toggle" type="button" aria-pressed="false" aria-label="Toggle dark/light theme">
+        <span class="theme-toggle__icon" id="themeIcon">🌙</span>
+        <span class="theme-toggle__label" id="themeLabel">Dark</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="dashboard">
+
+    <!-- HERO / STATISTICS -->
+    <section class="hero">
+      <div class="hero__intro">
+        <p class="eyebrow">Vanilla JS · No frameworks · Just the DOM</p>
+        <h1>Run your day from one glass panel.</h1>
+        <p class="hero__sub">Every card, badge and counter below is built with <code>document.createElement()</code> — nothing is templated by a framework.</p>
+      </div>
+
+      <div class="stats" id="statsRow">
+        <div class="stat-card stat-card--total">
+          <span class="stat-card__value" id="totalCount">0</span>
+          <span class="stat-card__label">Total Tasks</span>
+        </div>
+        <div class="stat-card stat-card--pending">
+          <span class="stat-card__value" id="pendingCount">0</span>
+          <span class="stat-card__label">Pending</span>
+        </div>
+        <div class="stat-card stat-card--done">
+          <span class="stat-card__value" id="completedCount">0</span>
+          <span class="stat-card__label">Completed</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- TASK FORM  (Feature 1: Task Creation Module) -->
+    <section class="panel form-panel">
+      <h2 class="panel__title">New Task</h2>
+      <form id="taskForm" class="task-form" novalidate>
+        <div class="field">
+          <label for="taskTitle">Title</label>
+          <input
+            type="text"
+            id="taskTitle"
+            name="taskTitle"
+            placeholder="e.g. Finish DOM assignment"
+            value="Untitled task"
+            autocomplete="off"
+            required
+          />
+        </div>
+
+        <div class="field field--narrow">
+          <label for="taskCategory">Category</label>
+          <select id="taskCategory" name="taskCategory">
+            <option value="Personal">Personal</option>
+            <option value="Work">Work</option>
+            <option value="Study">Study</option>
+            <option value="Shopping">Shopping</option>
+            <option value="Others">Others</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn--primary" id="addTaskBtn">
+          <span aria-hidden="true">＋</span> Add Task
+        </button>
+      </form>
+    </section>
+
+    <!-- SEARCH + FILTER + TASK LIST -->
+    <section class="panel list-panel">
+      <div class="list-panel__toolbar">
+        <div class="search-box">
+          <span class="search-box__icon" aria-hidden="true">🔍</span>
+          <input type="search" id="searchInput" placeholder="Search tasks…" />
+        </div>
+
+        <select id="categoryFilter" class="filter-select" aria-label="Filter tasks by category">
+          <option value="all">All Categories</option>
+          <option value="Personal">Personal</option>
+          <option value="Work">Work</option>
+          <option value="Study">Study</option>
+          <option value="Shopping">Shopping</option>
+          <option value="Others">Others</option>
+        </select>
+
+        <button id="clearAllBtn" class="btn btn--ghost btn--danger" type="button">Clear All</button>
+      </div>
+
+      <!--
+        NOTE ON EVENT DELEGATION (Feature 6):
+        This <ul> has ONE listener attached to it in script.js.
+        Individual <li> task cards and their buttons get NO listeners
+        of their own — clicks bubble up to this container and are
+        routed using event.target.closest().
+      -->
+      <ul id="taskList" class="task-list" aria-live="polite"></ul>
+
+      <!-- Empty state illustration, shown/hidden via classList -->
+      <div id="emptyState" class="empty-state">
+        <div class="empty-state__art" aria-hidden="true">🗒️</div>
+        <p>No tasks yet. Add your first one above.</p>
+      </div>
+    </section>
+
+    <!--FEATURE 8: BROWSER RENDERING PIPELINE VISUAL -->
+
+    <section id="pipeline" class="panel pipeline-panel">
+      <h2 class="panel__title">How the Browser Renders This Page</h2>
+      <p class="panel__sub">HTML and CSS text become pixels through this exact pipeline — the same one that just drew this card.</p>
+
+      <div class="pipeline">
+        <div class="pipeline__track" aria-hidden="true"></div>
+
+        <div class="pipe-card">
+          <span class="pipe-card__step">01</span>
+          <h3>HTML → Parsing</h3>
+          <p>The browser reads raw HTML bytes and converts them into characters, then tags.</p>
+        </div>
+        <div class="pipe-card">
+          <span class="pipe-card__step">02</span>
+          <h3>Tokenization</h3>
+          <p>Characters are grouped into tokens: start tags, end tags, attribute names/values.</p>
+        </div>
+        <div class="pipe-card">
+          <span class="pipe-card__step">03</span>
+          <h3>DOM Tree</h3>
+          <p>Tokens become nodes; nodes are linked by parent/child relationships into the DOM tree.</p>
+        </div>
+        <div class="pipe-card pipe-card--merge">
+          <span class="pipe-card__step">04</span>
+          <h3>CSS → CSSOM Tree</h3>
+          <p>Stylesheets are parsed the same way and built into the CSSOM — a tree of computed styles.</p>
+        </div>
+        <div class="pipe-card">
+          <span class="pipe-card__step">05</span>
+          <h3>Render Tree</h3>
+          <p>DOM + CSSOM are combined; nodes with <code>display:none</code> are excluded.</p>
+        </div>
+        <div class="pipe-card">
+          <span class="pipe-card__step">06</span>
+          <h3>Layout</h3>
+          <p>The browser computes exact size and position for every render-tree box.</p>
+        </div>
+        <div class="pipe-card">
+          <span class="pipe-card__step">07</span>
+          <h3>Paint</h3>
+          <p>Pixels are filled in: color, borders, shadows, text — onto layers.</p>
+        </div>
+        <div class="pipe-card">
+          <span class="pipe-card__step">08</span>
+          <h3>Composite</h3>
+          <p>Layers are merged by the compositor thread and drawn to the screen.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURE 7: EVENT PROPAGATION DEMO -->
+
+    <section id="propagation" class="panel propagation-panel">
+      <h2 class="panel__title">Event Propagation Playground</h2>
+      <p class="panel__sub">Click the innermost button. Watch the console log fill up below in a different order for each phase.</p>
+
+      <div class="propagation-demo">
+        <div id="grandparent" class="prop-box prop-box--grandparent" data-role="grandparent">
+          Grandparent
+          <div id="parent" class="prop-box prop-box--parent" data-role="parent">
+            Parent
+            <button id="child" class="prop-box prop-box--child" data-role="child" type="button">
+              Child Button
+            </button>
+          </div>
+        </div>
+
+        <div class="propagation-controls">
+          <label class="toggle">
+            <input type="checkbox" id="captureToggle" />
+            <span>Use capturing phase (<code>capture: true</code>)</span>
+          </label>
+          <button id="clearLogBtn" class="btn btn--ghost" type="button">Clear Log</button>
+        </div>
+      </div>
+
+      <div class="console-panel">
+        <div class="console-panel__header">Console Output</div>
+        <ol id="propagationLog" class="console-panel__log"></ol>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>Taskline — built with HTML5, CSS3 &amp; Vanilla JavaScript (ES6). No frameworks, no libraries.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
