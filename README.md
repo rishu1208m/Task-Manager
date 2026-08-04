@@ -73,7 +73,7 @@ python -m http.server 8080
 
 - `Dashboard — Dark Mode` — ![screenshot placeholder](./screenshot/dashboard-dark.png)
 - `Dashboard — Light Mode` — ![screenshot placeholder](./screenshot/dashboard-light.png)
-- `Rendering Pipeline Section` — ![screenshot placeholder](./screenshot/pipeline.png/screenshots)
+- `Rendering Pipeline Section` — ![screenshot placeholder](./screenshot/pipeline.png)
 - `Event Propagation Demo` — ![screenshot placeholder](./screenshot/propagation.png)
 
 ---
